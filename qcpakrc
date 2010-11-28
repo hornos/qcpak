@@ -1,0 +1,48 @@
+
+# Local bin
+p_loc="${HOME}/local/bin"
+if test -d ${p_loc} ; then
+  PATH=${p_loc}:${PATH}
+fi
+
+
+# Local man
+p_loc="${HOME}/local/share/man"
+if test -d ${p_loc} ; then
+  MANPATH=${p_loc}:$MANPATH
+fi
+
+# Local lib
+p_loc="${HOME}/local/lib"
+if test -d ${p_loc} ; then
+  if test -n "$LD_LIBRARY_PATH"; then
+    LD_LIBRARY_PATH=${p_loc}:$LD_LIBRARY_PATH
+  else
+    export LD_LIBRARY_PATH=${p_loc}
+  fi
+fi
+
+# Local pkgcfg
+p_loc="${HOME}/local/lib/pkgconfig"
+if test -d ${p_loc} ; then
+  if test -n "$PKG_CONFIG_PATH"; then
+    PKG_CONFIG_PATH=${p_loc}:$PKG_CONFIG_PATH
+  else
+    export PKG_CONFIG_PATH=${p_loc}
+  fi
+fi
+
+# qcpak
+p_loc="${HOME}/shpak/bin"
+if test -d ${p_loc} ; then
+  PATH=${PATH}:${p_loc}
+fi
+
+for pi in vasp siesta exciting ; do
+  p_loc="${HOME}/qcpak/${pi}/bin"
+  if test -d ${p_loc} ; then
+    PATH=${PATH}:${p_loc}
+  fi
+done
+
+
