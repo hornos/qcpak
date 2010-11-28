@@ -1,0 +1,8 @@
+qcpak is a skeleton for program directories
+
+put into $HOME/.bashrc:
+
+if test -f ${HOME}/qcpak/qcpakrc ; then
+  . ${HOME}/qcpak/qcpakrc
+fi
+
