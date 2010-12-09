@@ -5,11 +5,13 @@
 # options -----------------------------------------------------------------------
 _inp="${1:-OSZICAR}"
 _keep=false
+_spline=false
 if test $# -gt 1 ; then
-  while getopts khi: opt; do
+  while getopts kshi: opt; do
     case "$opt" in
       i) _inp=$OPTARG;;
       k) _keep=true;;
+      s) _spline=true;;
       h) echo "Usage: $(basename $0) [-k] [-i input]"; exit 1;;
     esac
   done
@@ -37,9 +39,13 @@ set title "Energy Convergence - ${inp}"
 set xlabel "Step"
 set ylabel "Energy [eV]"
 set pointsize 2
-plot "${dat}" using 1:2 title "calcs" with points, \
-     "${dat}" using 1:2 smooth csplines title "csplines"
+plot "${dat}" using 1:2 title "calcs" with points
 EOF
+if ${_spline} ; then
+cat >> ${plt} << EOF
+plot "${dat}" using 1:2 smooth csplines title "csplines"
+EOF
+fi
 
 ${GPLOT} -persist ${plt}
 if ! ${_keep} ; then
