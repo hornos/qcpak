@@ -33,10 +33,12 @@ if test -d ${p_loc} ; then
 fi
 
 # qcpak
-p_loc="${HOME}/shpak/bin"
-if test -d ${p_loc} ; then
-  PATH=${PATH}:${p_loc}
-fi
+for pi in shpak pypak ; do
+  p_loc="${HOME}/${pi}/bin"
+  if test -d ${p_loc} ; then
+    PATH=${PATH}:${p_loc}
+  fi
+done
 
 for pi in vasp siesta exciting ; do
   p_loc="${HOME}/qcpak/${pi}/bin"
