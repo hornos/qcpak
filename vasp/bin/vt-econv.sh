@@ -39,11 +39,15 @@ set title "Energy Convergence - ${inp}"
 set xlabel "Step"
 set ylabel "Energy [eV]"
 set pointsize 2
-plot "${dat}" using 1:2 title "calcs" with points
 EOF
 if ${_spline} ; then
 cat >> ${plt} << EOF
- "${dat}" using 1:2 smooth csplines title "csplines"
+plot "${dat}" using 1:2 title "calcs" with points \
+     "${dat}" using 1:2 smooth csplines title "csplines"
+EOF
+else
+cat >> ${plt} << EOF
+plot "${dat}" using 1:2 title "calcs" with points
 EOF
 fi
 
