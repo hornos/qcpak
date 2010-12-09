@@ -42,7 +42,7 @@ set pointsize 2
 EOF
 if ${_spline} ; then
 cat >> ${plt} << EOF
-plot "${dat}" using 1:2 title "calcs" with points \
+plot "${dat}" using 1:2 title "calcs" with points, \
      "${dat}" using 1:2 smooth csplines title "csplines"
 EOF
 else
