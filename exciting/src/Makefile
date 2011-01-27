@@ -1,4 +1,4 @@
-include arch.make
+include ../../arch.make
 
 EXC_MASTER_GIT=git://github.com/exciting/exciting.git
 

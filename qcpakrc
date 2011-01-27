@@ -5,7 +5,6 @@ if test -d ${p_loc} ; then
   PATH=${p_loc}:${PATH}
 fi
 
-
 # Local man
 p_loc="${HOME}/local/share/man"
 if test -d ${p_loc} ; then
@@ -33,18 +32,29 @@ if test -d ${p_loc} ; then
 fi
 
 # qcpak
-for pi in shpak pypak ; do
-  p_loc="${HOME}/${pi}/bin"
-  if test -d ${p_loc} ; then
-    PATH=${PATH}:${p_loc}
-  fi
-done
+p_loc="${HOME}/shpak/bin"
+if test -d ${p_loc} ; then
+  PATH=${PATH}:${p_loc}
+fi
 
-for pi in vasp siesta exciting ; do
+# bins
+for pi in vasp siesta exciting; do
   p_loc="${HOME}/qcpak/${pi}/bin"
   if test -d ${p_loc} ; then
     PATH=${PATH}:${p_loc}
   fi
 done
 
+# kantor tools
+pi="kantor/lev00"
+p_loc="${HOME}/qcpak/${pi}"
+if test -d ${p_loc} ; then
+  PATH=${PATH}:${p_loc}
+fi
 
+pi="kantor/tetr"
+p_loc="${HOME}/qcpak/${pi}"
+if test -d ${p_loc} ; then
+  PATH=${PATH}:${p_loc}
+  HOME_TETR=${p_loc}
+fi
