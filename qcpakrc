@@ -1,17 +1,21 @@
+_m=""
 
-# Local bin
+# Local Path
+# -----------------------------------------------------------------------
 p_loc="${HOME}/local/bin"
 if test -d ${p_loc} ; then
   PATH=${p_loc}:${PATH}
 fi
 
-# Local man
+# Local Manual
+# -----------------------------------------------------------------------
 p_loc="${HOME}/local/share/man"
 if test -d ${p_loc} ; then
   MANPATH=${p_loc}:$MANPATH
 fi
 
-# Local lib
+# Local Lib
+# -----------------------------------------------------------------------
 p_loc="${HOME}/local/lib"
 if test -d ${p_loc} ; then
   if test -n "$LD_LIBRARY_PATH"; then
@@ -22,6 +26,7 @@ if test -d ${p_loc} ; then
 fi
 
 # Local pkgcfg
+# -----------------------------------------------------------------------
 p_loc="${HOME}/local/lib/pkgconfig"
 if test -d ${p_loc} ; then
   if test -n "$PKG_CONFIG_PATH"; then
@@ -32,24 +37,29 @@ if test -d ${p_loc} ; then
 fi
 
 # qcpak
+# -----------------------------------------------------------------------
 p_loc="${HOME}/shpak/bin"
 if test -d ${p_loc} ; then
   PATH=${PATH}:${p_loc}
 fi
 
-# bins
+# Packages
+# -----------------------------------------------------------------------
 for pi in vasp siesta exciting; do
   p_loc="${HOME}/qcpak/${pi}/bin"
   if test -d ${p_loc} ; then
     PATH=${PATH}:${p_loc}
+    _m="${_m} ${pi}"
   fi
 done
 
-# kantor tools
+# Tools
+# -----------------------------------------------------------------------
 pi="kantor/lev00"
 p_loc="${HOME}/qcpak/${pi}"
 if test -d ${p_loc} ; then
   PATH=${PATH}:${p_loc}
+  _m="${_m} lev00"
 fi
 
 pi="kantor/tetr"
@@ -57,4 +67,8 @@ p_loc="${HOME}/qcpak/${pi}"
 if test -d ${p_loc} ; then
   PATH=${PATH}:${p_loc}
   HOME_TETR=${p_loc}
+  _m="${_m} tetr"
 fi
+
+echo "qcpak: ${_m}"
+unset _m
