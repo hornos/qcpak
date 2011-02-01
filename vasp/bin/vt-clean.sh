@@ -3,6 +3,7 @@
 . $(dirname ${0})/../lib/h.sh
 
 # options -----------------------------------------------------------------------
+_force=false
 
 if test $# -gt 1 ; then
   while getopts p:fh opt; do
