@@ -1,74 +1,70 @@
-_m=""
+# Functions
+# -----------------------------------------------------------------------
+function qp_addpath() {
+  local _v="${1:-PATH}"
+  local _p="${2}"
+  if test "${_p}" = "" ; then
+    return 1
+  fi
+  if ! test -d "${_p}" ; then
+    return 2
+  fi
+  # not set
+  if test -z "${!_v}" ; then
+    eval export ${_v}=${_p}
+    return $?
+  fi
+  # grep
+  echo ${!_v} | grep "${_p}" &> /dev/null
+  if test $? -gt 0 ; then
+    eval ${_v}=${!_v}:${_p}
+    return $?
+  fi
+}
+
+function qp_isbsd() {
+  if test "${OSTYPE/darwin*/bsd}" = "bsd" ; then
+    return 0
+  fi
+  return 1
+}
+
+function qp_pkg() {
+  local _m=""
+  local _p_loc="${1:-${HOME}/qcpak}"
+  local _d
+  local _rc
+  local _d_bn
+  for _d in $(ls -d ${_p_loc}/*/) ; do
+    _rc="${_d}/rc"
+    if test -r "${_rc}" ; then
+      . "${_rc}"
+      _d_bn=$(basename "${_d}")
+      _d_bn=${_d_bn%%/}
+      _m="${_m} ${_d_bn}"
+    fi
+  done
+  echo "${_m}"
+}
 
 # Local Path
 # -----------------------------------------------------------------------
-p_loc="${HOME}/local/bin"
-if test -d ${p_loc} ; then
-  PATH=${p_loc}:${PATH}
+qp_addpath "PATH"            "${HOME}/local/bin"
+qp_addpath "MANPATH"         "${HOME}/local/share/man"
+qp_addpath "PKG_CONFIG_PATH" "${HOME}/local/lib/pkgconfig"
+
+if qp_isbsd ; then
+  qp_addpath "DYLD_LIBRARY_PATH" "${HOME}/local/lib"
+else
+  qp_addpath "LD_LIBRARY_PATH"   "${HOME}/local/lib"
 fi
 
-# Local Manual
-# -----------------------------------------------------------------------
-p_loc="${HOME}/local/share/man"
-if test -d ${p_loc} ; then
-  MANPATH=${p_loc}:$MANPATH
-fi
 
-# Local Lib
+# shpak
 # -----------------------------------------------------------------------
-p_loc="${HOME}/local/lib"
-if test -d ${p_loc} ; then
-  if test -n "$LD_LIBRARY_PATH"; then
-    LD_LIBRARY_PATH=${p_loc}:$LD_LIBRARY_PATH
-  else
-    export LD_LIBRARY_PATH=${p_loc}
-  fi
-fi
+qp_addpath "PATH" "${HOME}/shpak/bin"
 
-# Local pkgcfg
-# -----------------------------------------------------------------------
-p_loc="${HOME}/local/lib/pkgconfig"
-if test -d ${p_loc} ; then
-  if test -n "$PKG_CONFIG_PATH"; then
-    PKG_CONFIG_PATH=${p_loc}:$PKG_CONFIG_PATH
-  else
-    export PKG_CONFIG_PATH=${p_loc}
-  fi
-fi
-
-# qcpak
-# -----------------------------------------------------------------------
-p_loc="${HOME}/shpak/bin"
-if test -d ${p_loc} ; then
-  PATH=${PATH}:${p_loc}
-fi
 
 # Packages
 # -----------------------------------------------------------------------
-for pi in vasp siesta exciting; do
-  p_loc="${HOME}/qcpak/${pi}/bin"
-  if test -d ${p_loc} ; then
-    PATH=${PATH}:${p_loc}
-    _m="${_m} ${pi}"
-  fi
-done
-
-# Tools
-# -----------------------------------------------------------------------
-pi="kantor/lev00"
-p_loc="${HOME}/qcpak/${pi}"
-if test -d ${p_loc} ; then
-  PATH=${PATH}:${p_loc}
-  _m="${_m} lev00"
-fi
-
-pi="kantor/tetr"
-p_loc="${HOME}/qcpak/${pi}"
-if test -d ${p_loc} ; then
-  PATH=${PATH}:${p_loc}
-  HOME_TETR=${p_loc}
-  _m="${_m} tetr"
-fi
-
-echo "qcpak:${_m}"
-unset _m
+qp_pkg

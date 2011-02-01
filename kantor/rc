@@ -1,0 +1,4 @@
+qp_addpath "PATH"      "${HOME}/qcpak/kantor/lev00"
+qp_addpath "PATH"      "${HOME}/qcpak/kantor/tetr"
+qp_addpath "HOME_TETR" "${HOME}/qcpak/kantor/tetr"
+
