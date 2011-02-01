@@ -2,6 +2,11 @@
 
 . $(dirname ${0})/../lib/h.sh
 
+function usage() {
+  echo "Usage: $(basename $0) [-f] [-p pattern]"
+  exit 1
+}
+
 # options -----------------------------------------------------------------------
 _force=false
 
@@ -10,10 +15,13 @@ if test $# -gt 1 ; then
     case "$opt" in
       p) _pat=$OPTARG;;
       f) _force=true;;
-      h) echo "Usage: $(basename $0) [-f] [-p pattern]"; exit 1;;
+      h) usage;;
     esac
   done
 else
+  if test "${1}" = "-h" ; then
+    usage
+  fi
  _pat=${1:-WAVECAR}
 fi
 

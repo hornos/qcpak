@@ -2,6 +2,11 @@
 
 . $(dirname ${0})/../lib/h.sh
 
+function usage() {
+  echo "Usage: $(basename $0) [-k] [-i input]"
+  exit 1
+}
+
 # options -----------------------------------------------------------------------
 _inp="${1:-OUTCAR}"
 _keep=false
@@ -10,10 +15,13 @@ if test $# -gt 1 ; then
     case "$opt" in
       i) _inp=$OPTARG;;
       k) _keep=true;;
-      h) echo "Usage: $(basename $0) [-k] [-i input]"; exit 1;;
+      h) usage;;
     esac
   done
 else
+  if test "${1}" = "-h" ; then
+    usage
+  fi
   _inp="${1}"
 fi
 

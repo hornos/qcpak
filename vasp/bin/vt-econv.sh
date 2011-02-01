@@ -2,6 +2,11 @@
 
 . $(dirname ${0})/../lib/h.sh
 
+function usage() {
+  echo "Usage: $(basename $0) [-k] [-i input]"
+  exit 1
+}
+
 # options -----------------------------------------------------------------------
 _inp="${1:-OSZICAR}"
 _keep=false
@@ -12,10 +17,13 @@ if test $# -gt 1 ; then
       i) _inp=$OPTARG;;
       k) _keep=true;;
       s) _spline=true;;
-      h) echo "Usage: $(basename $0) [-k] [-i input]"; exit 1;;
+      h) usage;;
     esac
   done
 else
+  if test "${1}" = "-h" ; then
+    usage
+  fi
   _inp="${1}"
 fi
 
