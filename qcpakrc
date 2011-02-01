@@ -70,5 +70,5 @@ if test -d ${p_loc} ; then
   _m="${_m} tetr"
 fi
 
-echo "qcpak: ${_m}"
+echo "qcpak:${_m}"
 unset _m
