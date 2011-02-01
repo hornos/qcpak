@@ -44,7 +44,7 @@ function qp_pkg() {
       _m="${_m} ${_d_bn}"
     fi
   done
-  echo "${_m}"
+  echo -e "\nqcpak:${_m}\n"
 }
 
 # Local Path
