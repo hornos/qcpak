@@ -24,8 +24,14 @@ else
  _pre=${1:-SiC}
 fi
 
+echo
+echo "RENAME"
+echo
 for i in * ; do
   mv -fv "${i}" "${_pre}.${i}"
 done
 
+echo
+echo "COMPRESS"
+echo
 gzip -v *
