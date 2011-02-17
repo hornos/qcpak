@@ -1,0 +1,45 @@
+#!/bin/bash
+
+TH="/var/spool/torque"
+
+function pid_stop() {
+  local _p_pid="${1}"
+  local _msg="${2}"
+  local _pid=""
+  if test -r "${_p_pid}" ; then
+    _pid=$(cat "${_p_pid}")
+    ps -p ${_pid} &> /dev/null
+    if ! test $? -gt 0 ; then
+      echo "Stopping ${_msg}"
+      kill ${_pid}
+    fi
+  fi
+  return 1
+}
+
+_kill=false
+while getopts k opt; do
+  case "$opt" in
+    k) _kill=true;;
+  esac
+done
+
+
+_pid="${TH}/mom_priv/mom.lock"
+pid_stop "${_pid}" "PBS Client"
+
+_pid="${TH}/sched_priv/sched.lock"
+pid_stop "${_pid}" "PBS Scheduler"
+
+_pid="${TH}/server_priv/server.lock"
+pid_stop "${_pid}" "PBS Scheduler"
+
+if ${_kill} ; then
+  exit 0
+fi
+
+sleep 3
+
+pbs_server
+pbs_sched
+pbs_mom

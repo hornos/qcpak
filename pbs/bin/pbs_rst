@@ -1,0 +1,21 @@
+#!/bin/bash
+
+qterm
+pbs_server -t create
+
+qmgr -e << EOF
+create queue batch
+set queue batch queue_type = Execution
+set queue batch resources_default.nodes = 1
+set queue batch resources_default.walltime = 01:00:00
+set queue batch enabled = True
+set queue batch started = True
+set server auto_node_np = True
+set server default_queue = batch
+set server scheduling = True
+EOF
+
+VST="../var"
+cp -Rv ${VST} /
+
+qmgr -c 'p s'
