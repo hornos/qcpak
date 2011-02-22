@@ -1,5 +1,5 @@
-PATCH:
+PATCH: possible cpp/gcc bug on OS X
 
 torque/src/include/pbs_config.h
 
-#define __DBL_MAX__ 1.7976931348623157e+308
+#define __DBL_MAX__ ((dobule)1.7976931348623157e+308L)
