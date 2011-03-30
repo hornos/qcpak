@@ -1,5 +1,5 @@
-# Functions
-# ----------13---------------------------42----------------------------72------80
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### Functions
 function qp_addpath() {
   local _v="${1:-PATH}"
   local _p="${2}"
@@ -47,8 +47,8 @@ function qp_pkg() {
   echo -e "\nqcpak:${_m}\n"
 }
 
-# Local Path
-# ----------13---------------------------42----------------------------72------80
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### PATH
 qp_addpath "PATH"            "${HOME}/local/bin"
 qp_addpath "MANPATH"         "${HOME}/local/share/man"
 qp_addpath "PKG_CONFIG_PATH" "${HOME}/local/lib/pkgconfig"
@@ -59,21 +59,15 @@ else
   qp_addpath "LD_LIBRARY_PATH"   "${HOME}/local/lib"
 fi
 
-
-# shpak
-# ----------13---------------------------42----------------------------72------80
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### Try to load commons
 qp_addpath "PATH" "${HOME}/shpak/bin"
-
-# pypak
-# ----------13---------------------------42----------------------------72------80
 qp_addpath "PATH" "${HOME}/pypak/bin"
 
-
-# Packages
-# ----------13---------------------------42----------------------------72------80
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### Load packages
 qp_pkg
 
-
-# Midnight Commander
-# ----------13---------------------------42----------------------------72------80
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### MC
 export MC_COLOR_TABLE="base_color=lightgray,blue:normal=lightgray,blue:selected=black,cyan:marked=yellow,blue:markselect=yellow,cyan:errors=white,red:menu=white,cyan:reverse=black,lightgray:dnormal=black,lightgray:dfocus=black,cyan:dhotnormal=blue,lightgray:dhotfocus=blue,cyan:viewunderline=brightred,blue:menuhot=yellow,cyan:menusel=white,black:menuhotsel=yellow,black:helpnormal=black,lightgray:helpitalic=red,lightgray:helpbold=blue,lightgray:helplink=black,cyan:helpslink=yellow,blue:gauge=white,black:input=black,cyan:directory=white,blue:executable=brightgreen,blue:link=lightgray,blue:stalelink=brightred,blue:device=brightmagenta,blue:core=red,blue:special=black,blue:editnormal=lightgray,blue:editbold=yellow,blue:editmarked=black,cyan:errdhotnormal=yellow,red:errdhotfocus=yellow,lightgray"

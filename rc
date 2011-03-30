@@ -1,3 +1,6 @@
+#/// \file rc
+#/// \brief common init
+
 _dir=$(dirname $BASH_SOURCE)
 qp_addpath "PATH" "${_dir}/bin"
 unset _dir
