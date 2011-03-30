@@ -14,7 +14,7 @@ molden:
 	    $(DL) -O $(MLD_TGZ) $(MLD_URL);fi; \
 	  $(TAR) xvzf $(MLD_TGZ); \
 	  mv ./molden?.? ./src; \
-	  cd ./src; make fi
+	  cd ./src; make; fi
 
 clean:
 	rm -fR ./src
