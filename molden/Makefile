@@ -13,7 +13,8 @@ molden:
 	  if ! test -f $(MLD_TGZ);then \
 	    $(DL) -O $(MLD_TGZ) $(MLD_URL);fi; \
 	  $(TAR) xvzf $(MLD_TGZ); \
-	  mv ./molden* ./src; fi
+	  mv ./molden?.? ./src; \
+	  cd ./src; make fi
 
 clean:
 	rm -fR ./src
