@@ -1,4 +1,6 @@
 #f3--&7-9-V13------21-------------------42--------------------64------72
+qp_p=$(dirname $BASH_SOURCE)
+
 ### Functions
 function qp_addpath() {
   local _v="${1:-PATH}"
@@ -57,6 +59,12 @@ if qp_isbsd ; then
   qp_addpath "DYLD_LIBRARY_PATH" "${HOME}/local/lib"
 else
   qp_addpath "LD_LIBRARY_PATH"   "${HOME}/local/lib"
+fi
+
+#f3--&7-9-V13------21-------------------42--------------------64------72
+### Alias
+if test -r "${qp_p}/alias" ; then
+  . ${qp_p}/alias
 fi
 
 #f3--&7-9-V13------21-------------------42--------------------64------72

@@ -1,0 +1,3 @@
+alias mor=more
+alias ..="cd .."
+alias ...="cd ../.."
