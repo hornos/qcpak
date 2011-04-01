@@ -1,13 +1,13 @@
 #!/bin/bash
+# shpak header
+. $(dirname ${0})/../../../shpak/lib/h.sh
 
-. $(dirname ${0})/../lib/h.sh
-
-function usage() {
+function __usage() {
   echo "Usage: $(basename $0) [-f] [-p pattern]"
   exit 1
 }
 
-# options -----------------------------------------------------------------------
+# options
 _force=false
 
 if test $# -gt 1 ; then
@@ -15,12 +15,12 @@ if test $# -gt 1 ; then
     case "$opt" in
       p) _pat=$OPTARG;;
       f) _force=true;;
-      h) usage;;
+      h) __usage;;
     esac
   done
 else
   if test "${1}" = "-h" ; then
-    usage
+    __usage
   fi
  _pat=${1:-WAVECAR}
 fi

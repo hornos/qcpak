@@ -1,8 +1,10 @@
 #!/bin/bash
+# shpak header
+. $(dirname ${0})/../../../shpak/lib/h.sh
 
-. $(dirname ${0})/../lib/h.sh
+sp_f_load @vasp
 
-function usage() {
+function __usage() {
   echo "Usage: $(basename $0) [-k] [-i input]"
   exit 1
 }
@@ -17,12 +19,12 @@ if test $# -gt 1 ; then
       i) _inp=$OPTARG;;
       k) _keep=true;;
       s) _spline=true;;
-      h) usage;;
+      h) __usage;;
     esac
   done
 else
   if test "${1}" = "-h" ; then
-    usage
+    __usage
   fi
   _inp="${1}"
 fi
@@ -31,12 +33,13 @@ inp=${_inp%%.gz}
 dat=${inp}.dat
 plt=${inp}.plt
 
+_cat=${sp_b_cat}
 if test "${_inp}" != "${inp}" ; then
-  CAT=${ZCAT}
+  _cat=${sp_b_zcat}
 fi
 
 # fiter out energies ------------------------------------------------------------
-${CAT} "${inp}" | \
+${_cat} "${inp}" | \
 awk '/^ *[0-9]+ *F=/{gsub(/=/,"",$8);printf "%4d %12.6f %12.6f %21.9f\n",$1,$3,$5,$8}' \
 > ${dat}
 
@@ -59,7 +62,7 @@ plot "${dat}" using 1:2 title "calcs" with points
 EOF
 fi
 
-${GPLOT} -persist ${plt}
+${sp_b_gpl} -persist ${plt}
 if ! ${_keep} ; then
   rm ${dat} ${plt}
 fi
