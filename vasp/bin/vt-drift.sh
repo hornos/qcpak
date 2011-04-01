@@ -50,7 +50,7 @@ pause -1
 EOF
 
 echo "Press Enter"
-${GPLOT} -persist ${plt}
+${sp_b_gpl} -persist ${plt}
 if ! ${_keep} ; then
   rm ${dat} ${plt}
 fi
