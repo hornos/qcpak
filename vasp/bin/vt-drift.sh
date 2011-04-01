@@ -1,8 +1,10 @@
 #!/bin/bash
+# shpak header
+. $(dirname ${0})/../../../shpak/lib/h.sh
 
-. $(dirname ${0})/../lib/h.sh
+sp_f_load @vasp
 
-function usage() {
+function __usage() {
   echo "Usage: $(basename $0) [-k] [-i input]"
   exit 1
 }
@@ -15,12 +17,12 @@ if test $# -gt 1 ; then
     case "$opt" in
       i) _inp=$OPTARG;;
       k) _keep=true;;
-      h) usage;;
+      h) __usage;;
     esac
   done
 else
   if test "${1}" = "-h" ; then
-    usage
+    __usage
   fi
   _inp="${1}"
 fi
@@ -29,12 +31,13 @@ inp=${_inp%%.gz}
 dat=${inp}_drift.dat
 plt=${inp}_drift.plt
 
+_cat=${sp_b_cat}
 if test "${_inp}" != "${inp}" ; then
-  CAT=${ZCAT}
+  _cat=${sp_b_zcat}
 fi
 
 # fiter out energies ------------------------------------------------------------
-${CAT} "${inp}" | \
+${_cat} "${inp}" | \
 awk 'BEGIN{step=0} /^ *total drift:/{++step;printf "%3d  0.0 0.0 0.0   %12.6f %12.6f %12.6f\n",step,$3,$4,$5}' \
 > ${dat}
 
