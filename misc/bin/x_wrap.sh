@@ -16,14 +16,9 @@ _wrp="x_ulimit.sh"
 _q="-v"
 
 ### options
-if test $# -eq 0 ; then
+if test "${1}" = "-h" ; then
   __usage
   exit 1
-elif test $# -eq 1 ; then
-  if test "${1}" = "-h" ; then
-    __usage
-    exit 1
-  fi
 fi
 
 while getopts hp:w:cdq opt; do
@@ -43,8 +38,11 @@ if ! test -x "${_wrp}" ; then
   exit 1
 fi
 
-for x in ${_pat} ; do
+for x in ${_pat}* ; do
   if test "${x%%${_sfx}}${_sfx}" != "${x}${_sfx}" ; then
+    continue
+  fi
+  if ! test -x "${x}" ; then
     continue
   fi
   _wx="${x}${_sfx}"
