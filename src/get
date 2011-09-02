@@ -5,5 +5,6 @@ FRM="tarball/master"
 
 target="${1:-qcpak}"
 
-wget "${URL}/${target}/${FRM}"
+wget -qO- "${URL}/${target}/${FRM}" > "${target}.tgz"
+
 
