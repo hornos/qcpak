@@ -1,0 +1,9 @@
+#!/bin/bash
+
+URL="https://github.com/hornos"
+FRM="tarball/master"
+
+target="${1:-qcpak}"
+
+wget "${URL}/${target}/${FRM}"
+
