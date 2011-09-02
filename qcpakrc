@@ -31,13 +31,6 @@ function qp_isbsd() {
   return 1
 }
 
-fucntion qp_inc() {
-  local _rc="${1}"
-  if test -r "${_rc}" ; then
-    . "${_rc}"
-  fi
-}
-
 function qp_pkg() {
   local _m=""
   local _p_loc="${1:-${HOME}/qcpak}"
@@ -75,11 +68,16 @@ if test -r "${qp_p}/alias" ; then
 fi
 
 #f3--&7-9-V13------21-------------------42--------------------64------72
-### Try to load commons
+### shpak
 qp_addpath "PATH" "${HOME}/shpak/bin"
-qp_inc "${HOME}/shpak/alias"
-qp_inc "${HOME}/shpak/functions"
+if test -r "${HOME}/shpak/alias" ; then
+  source "${HOME}/shpak/alias"
+fi
+if test -r "${HOME}/shpak/functions" ; then
+  source "${HOME}/shpak/functions"
+fi
 
+### pypak
 qp_addpath "PATH" "${HOME}/pypak/bin"
 
 #f3--&7-9-V13------21-------------------42--------------------64------72
