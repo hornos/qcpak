@@ -88,5 +88,8 @@ qp_pkg
 ### MC
 export MC_COLOR_TABLE="base_color=lightgray,blue:normal=lightgray,blue:selected=black,cyan:marked=yellow,blue:markselect=yellow,cyan:errors=white,red:menu=white,cyan:reverse=black,lightgray:dnormal=black,lightgray:dfocus=black,cyan:dhotnormal=blue,lightgray:dhotfocus=blue,cyan:viewunderline=brightred,blue:menuhot=yellow,cyan:menusel=white,black:menuhotsel=yellow,black:helpnormal=black,lightgray:helpitalic=red,lightgray:helpbold=blue,lightgray:helplink=black,cyan:helpslink=yellow,blue:gauge=white,black:input=black,cyan:directory=white,blue:executable=brightgreen,blue:link=lightgray,blue:stalelink=brightred,blue:device=brightmagenta,blue:core=red,blue:special=black,blue:editnormal=lightgray,blue:editbold=yellow,blue:editmarked=black,cyan:errdhotnormal=yellow,red:errdhotfocus=yellow,lightgray"
 
-### Misc
+### Prompt
+# Simple
 # PS1="HOST \W (\$?)\$ "
+# Advanced
+# PS1="\e[37;44m \w \e[0m\n\e[35m\t\e[0m \e[34;40m\u@\H\e[0m\n\e[32mMACBOOK\e[0m \e[37m(0)\e[0m \$"
