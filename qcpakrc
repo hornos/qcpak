@@ -92,4 +92,4 @@ export MC_COLOR_TABLE="base_color=lightgray,blue:normal=lightgray,blue:selected=
 # Simple
 # PS1="HOST \W (\$?)\$ "
 # Advanced
-# PS1="\e[37;44m \w \e[0m\n\e[35m\t\e[0m \e[34;40m\u@\H\e[0m\n\e[32mMACBOOK\e[0m \e[37m(0)\e[0m \$ "
+# PS1="\n\e[37;44m \w \e[0m\n\e[35m\t\e[0m \e[34;40m\u@\H\e[0m\n\e[32mMACBOOK\e[0m \e[37m(0)\e[0m \$ "
