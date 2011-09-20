@@ -93,7 +93,7 @@ export MC_COLOR_TABLE="base_color=lightgray,blue:normal=lightgray,blue:selected=
 export PS1_HOST=HOST
 export PS1_DIP=0
 function ps1() {
-  local _d=${1}
+  local _d=${1:-0}
   if test ${PS1_DIP} -eq 0 || test ${_d} -eq 1 ; then
     # Advanced
     PS1="\n\e[37;44m \w \e[0m\n\e[35m\t\e[0m \e[34;40m\u@\H\e[0m\n\e[32m${PS1_HOST}\e[0m \e[37m(0)\e[0m \$ "
