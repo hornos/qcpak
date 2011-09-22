@@ -52,6 +52,7 @@ function qp_pkg() {
 #f3--&7-9-V13------21-------------------42--------------------64------72
 ### PATH
 qp_addpath "PATH"            "${HOME}/local/bin"
+qp_addpath "PATH"            "${HOME}/local/usr/bin"
 qp_addpath "MANPATH"         "${HOME}/local/share/man"
 qp_addpath "PKG_CONFIG_PATH" "${HOME}/local/lib/pkgconfig"
 
