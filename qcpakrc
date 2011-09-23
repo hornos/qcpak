@@ -53,6 +53,7 @@ function qp_pkg() {
 ### PATH
 qp_addpath "PATH"            "${HOME}/local/bin"
 qp_addpath "PATH"            "${HOME}/local/usr/bin"
+qp_addpath "PATH"            "${HOME}/local/usr/lib64/git"
 qp_addpath "MANPATH"         "${HOME}/local/share/man"
 qp_addpath "PKG_CONFIG_PATH" "${HOME}/local/lib/pkgconfig"
 
