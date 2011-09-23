@@ -99,7 +99,7 @@ function ps1() {
     # Advanced
     PS1="\n\e[37;44m \w \e[0m\n\e[35m\t\e[0m \e[34;40m\u@\H\e[0m\n\e[32m${PS1_HOST}\e[0m \e[37m(0)\e[0m \$ "
     PS1_DIP=1
-  else
+  else if test ${PS1_DIP} -eq 1 || test ${_d} -eq 0 ; then
     PS1="${PS1_HOST} \W (\$?)\$ "
     PS1_DIP=0
   fi
