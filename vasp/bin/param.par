@@ -1,0 +1,22 @@
+# parameter file of corr script (execute: xdefectalign) 
+
+#Reciprocal space cutoff energy [Ry]. This implicitly defines the Fourier mesh size.
+ECUTOFF="60"
+
+#Added(+) or removed(-) electrons (-1*charge)
+CHARGE="1"
+
+#Dielectric constant
+EPS="9.7"
+
+#Position of defect in relative coordinates
+DPx="0.9999696778882807"
+DPy="0.9999393557765330"
+DPz="0.0280010621478084"
+
+#Reference potential: pscriptsupercell (name of vasp LOCPOT file)
+VREF="4H-SiC.LOCPOT"
+
+#Defect potential (name of vasp LOCPOT file)
+VDEF="SiC.LOCPOT.gz"
+

@@ -1,0 +1,138 @@
+#!/bin/bash
+# http://www.mpie.de/index.php?id=3281
+
+param="param.par"
+
+while getopts p: opt ; do
+  case "$opt" in
+    p) param=$OPTARG;;
+  esac
+done
+
+if test -r $param ; then
+  source $param
+else
+  echo "Error: $param does not exist"
+  exit 1
+fi 
+
+# check the existance of the inputfiles
+if ! test -e ${VREF} ; then
+  echo "Error: ${VREF} does not exist!"
+  exit 2
+fi
+
+if ! test -e ${VDEF} ; then
+  echo "Error: ${VDEF} does not exist!"
+  exit 2
+fi
+
+# unzip the files if needed
+w=$(file -i ${VREF} | awk '{print $2;}')
+if test "${w}" = "application/x-gzip" ; then
+  echo "Unzip..."
+  gzip -d ${VREF}
+  VREF=${VREF%%.gz}
+fi 
+
+w=$(file -i ${VDEF} | awk '{print $2;}')
+if test "${w}" = "application/x-gzip" ; then
+  echo "Unzip..."
+  gzip -d ${VDEF}
+  VDEF=${VDEF%%.gz}
+fi 
+
+# delete the line contains the chemical IDs
+w=$(cat ${VREF} | awk '{if(NR==7) print $1; if(NR>7) exit 0}' | awk '{print substr($1,0,1);}')
+if test $(awk -v s="${w}" 'BEGIN{print index("cCdD", s)}') -eq 0 ; then
+  chmod u+w ${VREF}
+  sed -i '6d' ${VREF}
+fi
+
+w=$(cat ${VDEF} | awk '{if(NR==7) print $1; if(NR>7) exit 0}' | awk '{print substr($1,0,1);}')
+if test $(awk -v s="${w}" 'BEGIN{print index("cCdD", s)}') -eq 0 ; then
+  chmod u+w ${VDEF}
+  sed -i '6d' ${VDEF}
+fi
+
+# calculate correction (without C)
+echo -e "\nSort range potentioal average: yz plan --> srpotx.dat"
+./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
+                --eps ${EPS} -a1 --pos "{${DPx}, ${DPy}, ${DPz}}" \
+                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpotx.dat
+
+echo -e "\nSort range potential average: xz plan --> srpoty.dat"
+./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
+                --eps ${EPS} -a2 --pos "{${DPx}, ${DPy}, ${DPz}}" \
+                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpoty.dat
+
+echo -e "\nSort range potential average: xy plan --> srpotz.dat"
+./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
+                --eps ${EPS} -a3 --pos "{${DPx}, ${DPy}, ${DPz}}" \
+                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpotz.dat
+
+
+# determine C parameter
+
+w=$(wc -l srpotx.dat | awk '{print $1}')
+let w2=${w}/2
+let avr=${w2}/10
+if test ${avr} -le 3 ; then
+  if test ${avr} -eq 0 ; then
+    echo "Error: getting C parameter"
+    exit 3
+  fi
+  echo "Warning: getting C parameter!"
+fi
+
+let a1=${w2}-${avr}
+let a2=${w2}+${avr}+${w}%2
+
+cx=$(cat srpotx.dat | awk -v a1=${a1} -v a2=${a2} '{if(NR>a1)if(NR<=a2){sum+=$2}} END {print sum/(a2-a1)}')
+
+w=$(wc -l srpoty.dat | awk '{print $1}')
+let w2=${w}/2
+let avr=${w2}/10
+if test ${avr} -le 3 ; then
+  if test ${avr} -eq 0 ; then
+    echo "Error: getting C parameter"
+    exit 3
+  fi
+  echo "Warning: getting C parameter!"
+fi
+
+let a1=${w2}-${avr}
+let a2=${w2}+${avr}+${w}%2
+
+cy=$(cat srpoty.dat | awk -v a1=${a1} -v a2=${a2} '{if(NR>a1)if(NR<=a2){sum+=$2}} END {print sum/(a2-a1)}')
+
+w=$(wc -l srpotz.dat | awk '{print $1}')
+let w2=${w}/2
+let avr=${w2}/10
+if test ${avr} -le 3 ; then
+  if test ${avr} -eq 0 ; then
+    echo "Error: getting C parameter"
+    exit 3
+  fi
+  echo "Warning: getting C parameter!"
+fi
+
+let a1=${w2}-${avr}
+let a2=${w2}+${avr}+${w}%2
+
+cz=$(cat srpotz.dat | awk -v a1=${a1} -v a2=${a2} '{if(NR>a1)if(NR<=a2){sum+=$2}} END {print sum/(a2-a1)}')
+
+
+CC=$(awk -v cx=${cx} -v cy=${cy} -v cz=${cz} 'BEGIN{print (cx+cy+cz)/3}')
+
+
+# correction calculation including C parameter
+echo -e "\n\nCalculation with C parameter"
+./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
+                -C ${CC} --eps ${EPS} -a3 --pos "{${DPx}, ${DPy}, ${DPz}}" \
+                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+
+rm -f vline-eV.dat
