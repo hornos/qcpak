@@ -1,13 +1,20 @@
 #!/bin/bash
 # http://www.mpie.de/index.php?id=3281
 
-param="param.par"
-
-while getopts p: opt ; do
+param="./param.par"
+_r=false
+while getopts p:r opt ; do
   case "$opt" in
+    r) _r=true;;
     p) param=$OPTARG;;
   esac
 done
+
+if ${_r} ; then
+  _r="--relative"
+else
+  _r=""
+fi
 
 if test -r $param ; then
   source $param
@@ -59,19 +66,19 @@ fi
 echo -e "\nSort range potentioal average: yz plan --> srpotx.dat"
 ./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
                 --eps ${EPS} -a1 --pos "{${DPx}, ${DPy}, ${DPz}}" \
-                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+                ${_r} --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
 cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpotx.dat
 
 echo -e "\nSort range potential average: xz plan --> srpoty.dat"
 ./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
                 --eps ${EPS} -a2 --pos "{${DPx}, ${DPy}, ${DPz}}" \
-                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+                ${_r} --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
 cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpoty.dat
 
 echo -e "\nSort range potential average: xy plan --> srpotz.dat"
 ./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
                 --eps ${EPS} -a3 --pos "{${DPx}, ${DPy}, ${DPz}}" \
-                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+                ${_r} --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
 cat vline-eV.dat | awk '{if(NF==3) print $1 " " $3;}' > srpotz.dat
 
 
@@ -133,6 +140,6 @@ CC=$(awk -v cx=${cx} -v cy=${cy} -v cz=${cz} 'BEGIN{print (cx+cy+cz)/3}')
 echo -e "\n\nCalculation with C parameter"
 ./sxdefectalign --ecut ${ECUTOFF} --charge ${CHARGE} \
                 -C ${CC} --eps ${EPS} -a3 --pos "{${DPx}, ${DPy}, ${DPz}}" \
-                --relative --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
+                ${_r} --vref ${VREF} --vdef ${VDEF} --cellFromPot --vasp
 
 rm -f vline-eV.dat
